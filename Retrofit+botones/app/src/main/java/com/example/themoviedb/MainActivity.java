@@ -24,6 +24,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnPopulares;
+    private Button btnTitanic;
+    private Button btnFightClub;
     private static MainActivity padre;
 
     public static MainActivity getPadre(){ //devuelve su referencia para poder llamarlo
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         this.padre = this;
         ServicePantallaPrincipal service=new ServicePantallaPrincipal(this);
         btnPopulares = findViewById(R.id.btnPopulares);
+        btnTitanic = findViewById(R.id.btnTitanic);
+        btnFightClub = findViewById(R.id.btnDetalles);
+
 
         btnPopulares.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,5 +51,21 @@ public class MainActivity extends AppCompatActivity {
                 service.getPopulares();
             }
         });
+
+        btnTitanic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                service.searchMovies("Titanic", 1);
+            }
+        });
+
+        btnFightClub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                service.searchMovies("Fight Club", 1);
+            }
+        });
+
+
     }
 }

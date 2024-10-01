@@ -1,15 +1,36 @@
 package com.example.themoviedb.movies_api;
 
+import com.example.themoviedb.json_mapper.Movie;
 import com.example.themoviedb.json_mapper.MovieResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface MoviesAPI {
-    //ROUTES!! express.js
-    @GET("movie/popular?api_key=4e21b129094e725e7136e5341af06f19") //mapemaos URL
-    Call<MovieResponse> getPopularMovies(); //lo trasforma en un objeto en java, en este caso MovieResponse
+    // Obtener películas populares
+    @GET("movie/popular")
+    Call<MovieResponse> getPopularMovies(
+            @Query("api_key") String apiKey,
+            @Query("language") String language,
+            @Query("page") int page
+    );
 
-    // Retrofit lo que hace es traducir de java a protocolo rest. Convierte el json en un objeto java (MovieResponse)
-    // va a interpretar el objeto json y convertirlo en una array de objetos Movie con sus atributos
+    // Buscar películas
+    @GET("search/movie")
+    Call<MovieResponse> searchMovies(
+            @Query("api_key") String apiKey,
+            @Query("language") String language,
+            @Query("query") String query,
+            @Query("page") int page
+    );
+
+    // Obtener detalles de una película
+    @GET("movie/{movie_id}")
+    Call<Movie> getMovieDetails(
+            @Path("movie_id") int movieId,
+            @Query("api_key") String apiKey,
+            @Query("language") String language
+    );
 }
