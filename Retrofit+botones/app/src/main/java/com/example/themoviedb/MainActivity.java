@@ -1,5 +1,6 @@
 package com.example.themoviedb;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.themoviedb.json_mapper.Movie;
 import com.example.themoviedb.json_mapper.MovieResponse;
+import com.example.themoviedb.listeners.ListenerFightClub;
 import com.example.themoviedb.retrofit.RetrofitClient;
 import com.example.themoviedb.services.ServicePantallaPrincipal;
 
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnTitanic;
     private Button btnFightClub;
     private static MainActivity padre;
+    private Context context;
 
     public static MainActivity getPadre(){ //devuelve su referencia para poder llamarlo
         return padre;
@@ -37,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.context=this;
         this.padre = this;
+
+
         ServicePantallaPrincipal service=new ServicePantallaPrincipal(this);
         btnPopulares = findViewById(R.id.btnPopulares);
         btnTitanic = findViewById(R.id.btnTitanic);
@@ -62,7 +68,17 @@ public class MainActivity extends AppCompatActivity {
         btnFightClub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                service.searchMovies("Fight Club", 1);
+                // Crea la implementación del listener para manejar el evento
+                ListenerFightClub listenerFightClub = new ListenerFightClub() {
+                    @Override
+                    public void onFightClub() {
+                        // Lo que quieras hacer cuando se encuentre "Fight Club"
+                        Toast.makeText(context, "¡Fight Club ha sido encontrado!", Toast.LENGTH_SHORT).show();
+                    }
+                };
+
+                // Llama al servicio pasándole el listener
+                service.getMovieDetails(550,listenerFightClub);
             }
         });
 
